@@ -19,4 +19,4 @@ Through this project is named DFS, its ambition is united storage.
   - Block storage
 - Computing support
   - Distribute computing. MapReduce, spark
-  - Parallel computing. OpenMPI, Parallel C
+  - Parallel computing. OpenMPI, UPC, Parallel C
