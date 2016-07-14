@@ -1,0 +1,22 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline author:t c:nil
+#+OPTIONS: creator:nil d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t
+#+OPTIONS: num:t p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t timestamp:t
+#+OPTIONS: title:t toc:t todo:t |:t
+#+TITLE: 分布式存储的元数据设计
+#+DATE: <2016-07-14 Thu>
+#+AUTHOR: peter.yu
+#+EMAIL: peter@peter-pc
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 24.5.2 (Org mode 8.3.4)
+
+常规的存储设计方法主要有以下几类
+
+- 无中心的存储设计，如GlusterFS。
+- 有中心的存储设计，如Hadoop。
+- 基于数据库的存储设计，如GridFS和HBase。
+- 绕过元数据的存储设计，如FastDFS。
+
+* 参考资料
+- [[http://blog.qiniu.com/archives/2546][分布式存储的元数据设计 - 七牛云]]
