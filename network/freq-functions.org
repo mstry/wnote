@@ -1,0 +1,62 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline author:t c:nil
+#+OPTIONS: creator:nil d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t
+#+OPTIONS: num:t p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t timestamp:t
+#+OPTIONS: title:t toc:t todo:t |:t
+#+TITLE: Linux网络编程常用函数
+#+DATE: <2016-07-29 Fri>
+#+AUTHOR: peter.yu
+#+EMAIL: peter@peter-pc
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 24.5.2 (Org mode 8.3.4)
+
+* 常用函数说明
+**  客户端
+*** connect
+
+#+BEGIN_SRC c
+int connect(int sockfd, struct sockaddr *addr, int addr_len);
+#+END_SRC
+
+- connect之前调用bind不是必须的，内核会分配ip，以及临时的port
+- connect调用后，会发送SYN，如果没有收到SYN-ACK，则返回ETIMEOUT
+- connect发送SYN后，如果得到的响应是RST，则返回ECONNECTREFUSE(如尝试connect路由器的端口)
+- connect调用后，如果路由n跳后，找不到主机，则返回EHOSTUNREACH(如connect一个不存在的ip)
+
+**  服务端
+*** bind
+
+*** listen
+
+#+BEGIN_SRC c
+int listen(int sockfd, int backlog);
+#+END_SRC
+本函数在socket和bind之后，accept之前调用。
+参数backlog为连接队列的长度，即未完成连接队列和已完成连接队列的长度之和。
+
+client调用connect，向server发送SYN；server收到后，会在未完成队列中新增一项，
+标明client有连接发起，且未完成，并回复SYN-ACK；client收到SYN-ACK后，
+发送ACK，完成三次握手；server收到ACK，将未完成队列的新增项移到已完成队列。
+
+如果server调用了accept，accept会从已完成队列中取出新增项，以完成后续工作。
+
+如果server收到SYN时，未完成队列已满，则抛弃SYN，其不发送RST(说明只是暂时繁忙，
+期待client不久后重新connect可以成功)。
+如果server发送SYN-ACK后，未收到ACK，则在一个超时时间(75s)后，将新增项移出未完成队列。
+
+*** accept
+
+#+BEGIN_SRC c
+int accept(int listen_fd, struct sockaddr *addr, socklen_t *addr_len);
+#+END_SRC
+
+- accept从已完成队列队首取出fd并返回
+- 已完成队列为空时则阻塞
+- 如果不关心client的地址，参数addr和addr_len可以置空
+
+** 其他
+*** socket
+*** close
+
+* 参考资料
